@@ -40,6 +40,11 @@ namespace ObjectComparer
                 }
             }
 
+            if (!(IsColletion(first) && IsColletion(second)) && !(!IsColletion(first) && !IsColletion(second)))
+            {
+                return false;
+            }
+
             if (IsColletion(first) && IsColletion(second))
             {
                 var foo = (IEnumerable)first;
