@@ -2,17 +2,18 @@
 
 namespace CachingWithReflection.Models
 {
-    [Caching(10)]
-    public class Person
+    [Caching(60)]
+    public class Person : ICachingModel
     {
-        public Person(int id, string name, string surname, DateTime dateOfBirth)
+        public Person()
+        {
+        }
+
+        public Person(int id, string name, string surname)
         {
             Id = id;
             Name = name;
             Surname = surname;
-            DateOfBirth = dateOfBirth;
-            ExtraData = string.Empty;
-            LastOrder = null;
         }
 
         public int Id { get; set; }
@@ -21,10 +22,9 @@ namespace CachingWithReflection.Models
 
         public string Surname { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
-
-        public string ExtraData { get; set; }
-
-        public DateTime? LastOrder { get; set; }
+        public override string ToString()
+        {
+            return "Id : " + Id + " Name : " + Name + " Surname : " + Surname;
+        }
     }
 }
