@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -39,8 +40,23 @@ namespace ObjectComparer
                 }
             }
 
+            if (IsColletion(first) && IsColletion(second))
+            {
+                var foo = (IEnumerable)first;
+                var bar = (IEnumerable)second;
+                var firstEnumerator = foo.GetEnumerator();
+                var secindEnumerator = bar.GetEnumerator();
+
+                while (firstEnumerator.MoveNext() && secindEnumerator.MoveNext())
+                {
+                    if(!DeepCompare(firstEnumerator.Current, secindEnumerator.Current))
+                    {
+                        return false;
+                    }
+                }
+            }
+
             var firstObjectFields = this.GetAllFields(firstObjectType);
-            var secondObjectFields = this.GetAllFields(secondObjectType);
 
             foreach (var elem in firstObjectFields)
             {
@@ -105,6 +121,11 @@ namespace ObjectComparer
             }
 
             return false;
+        }
+
+        private bool IsColletion(object obj)
+        {
+            return (obj.GetType().GetInterface(nameof(IEnumerable)) != null);
         }
     }
 }
